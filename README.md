@@ -8,7 +8,7 @@ Generate an SVG graph of recent Nightscout CGM data.
 python3 ns-cgm-graph.py [--url http://127.0.0.1:1337] [--hours 24] [--out cgm.svg]
 ```
 
-Reads `NS_URL` from env (default `http://127.0.0.1:1337`) and `NS_ENV` for the Nightscout `.env` path (default `/home/jack/nightscout/.env`).
+Reads `NS_URL` from env (default `http://127.0.0.1:1337`) and `NS_ENV` for the path to your Nightscout `.env` file (e.g. `~/.nightscout.env`).
 
 ## Requirements
 

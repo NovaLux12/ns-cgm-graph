@@ -22,7 +22,10 @@ DEFAULT_OUT = "cgm.svg"
 
 
 def _env_path() -> str:
-    return os.environ.get("NS_ENV", "/home/jack/nightscout/.env")
+    path = os.environ.get("NS_ENV")
+    if not path:
+        raise RuntimeError("NS_ENV must point to your Nightscout .env file")
+    return path
 
 
 def api_hash() -> str:
