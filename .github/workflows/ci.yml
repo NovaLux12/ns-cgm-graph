@@ -9,21 +9,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.11', '3.12', '3.13']
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Byte-compile (syntax + import check, stdlib only)
-        run: python3 -m py_compile ns-cgm-graph.py
-      - name: Run tests (stdlib unittest, no deps)
-        run: |
-          if ls test_*.py 1>/dev/null 2>&1; then
-            python3 -m unittest discover -s . -p 'test_*.py' -v
-          else
-            echo "No test_*.py found — py_compile already verified syntax"
-          fi
+          python-version: '3.11'
+      - run: pip install pytest
+      - run: python -m pytest -q

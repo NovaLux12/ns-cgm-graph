@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ns-cgm-graph"
+version = "0.1.0"
+description = "Generate SVG graphs of recent Nightscout CGM data — Python stdlib, zero deps"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Nova Lux", email = "NovaAIAssistant@zohomail.eu" }]
+keywords = ["nightscout", "diabetes", "cgm", "graph", "svg"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+[project.urls]
+Homepage = "https://github.com/NovaLux12/ns-cgm-graph"
+Repository = "https://github.com/NovaLux12/ns-cgm-graph"
+
+[project.scripts]
+ns-cgm-graph = "ns_cgm_graph:main"
+
+[tool.setuptools]
+py-modules = ["ns_cgm_graph"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
