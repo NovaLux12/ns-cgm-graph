@@ -17,7 +17,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 
 # Support both `ns_cgm_graph` (shim) and hyphenated `ns-cgm-graph.py`
 try:
-    from ns_cgm_graph import MGDL_TO_MMOL, _env_path, api_hash, fetch_entries, mmol
+    from ns_cgm_graph import MGDL_TO_MMOL, _env_path, api_hash, fetch_entries, main, mmol
 except ImportError:
     spec = importlib.util.spec_from_file_location(
         "ns_cgm_graph", os.path.join(_HERE, "ns-cgm-graph.py")
@@ -25,7 +25,7 @@ except ImportError:
     mod = importlib.util.module_from_spec(spec)
     sys.modules["ns_cgm_graph"] = mod
     spec.loader.exec_module(mod)
-    from ns_cgm_graph import MGDL_TO_MMOL, _env_path, api_hash, fetch_entries, mmol
+    from ns_cgm_graph import MGDL_TO_MMOL, _env_path, api_hash, fetch_entries, main, mmol
 
 
 class MmolTest(unittest.TestCase):
@@ -120,6 +120,32 @@ class FetchEntriesTest(unittest.TestCase):
             result = fetch_entries("http://example.com", 24)
             self.assertEqual(result, [])
 
+
+class SvgAvgLabelTest(unittest.TestCase):
+    """Regression: the SVG avg label must show the mean in mmol/L.
+
+    points[] already holds mmol values, so wrapping the mean in mmol()
+    again divided the label by 18 (8.0 mmol/L rendered as 0.4 mmol/L).
+    """
+
+    def _entries(self):
+        return [
+            {"date": 1_700_000_000_000 + i * 300_000, "sgv": 144}  # 144 mg/dL = 8.0 mmol/L
+            for i in range(6)
+        ]
+
+    def test_avg_label_shows_mmol(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "cgm.svg")
+            argv = ["ns-cgm-graph", "--hours", "24", "--out", out]
+            with patch("ns_cgm_graph.fetch_entries", return_value=self._entries()), \
+                    patch.object(sys, "argv", argv):
+                self.assertEqual(main(), 0)
+            with open(out) as f:
+                svg = f.read()
+        self.assertIn("avg 8.0 mmol/L", svg)
+        self.assertIn("<polyline", svg)
+        self.assertIn("#4ade80", svg)  # TIR band
 
 if __name__ == "__main__":
     unittest.main()

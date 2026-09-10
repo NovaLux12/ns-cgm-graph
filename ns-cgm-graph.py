@@ -104,7 +104,6 @@ def main() -> int:
     # Range bands
     hypo_top = ty(3.9)
     target_bottom = ty(10.0)
-    hyper_bottom = ty(3.9)
 
     svg = f"""<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
@@ -112,7 +111,7 @@ def main() -> int:
   <rect x="{pad}" y="{target_bottom:.1f}" width="{width - 2*pad}" height="{hypo_top - target_bottom:.1f}" fill="#4ade80" opacity="0.08"/>
   <polyline fill="none" stroke="#d4a64a" stroke-width="2" points="{poly}"/>
   <text x="{pad}" y="20" fill="#9aa0aa" font-family="ui-sans-serif,system-ui" font-size="11">Nightscout CGM — last {args.hours}h</text>
-  <text x="{width - pad}" y="20" fill="#9aa0aa" font-family="ui-sans-serif,system-ui" font-size="11" text-anchor="end">avg {mmol(sum(bg for _, bg in points) / len(points)):.1f} mmol/L</text>
+  <text x="{width - pad}" y="20" fill="#9aa0aa" font-family="ui-sans-serif,system-ui" font-size="11" text-anchor="end">avg {sum(bg for _, bg in points) / len(points):.1f} mmol/L</text>
 </svg>"""
 
     with open(args.out, "w") as f:
