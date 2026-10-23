@@ -37,10 +37,16 @@ Reads `NS_URL` from env (default `http://127.0.0.1:1337`) and `NS_ENV` for the p
 
 ```
 $ python3 ns-cgm-graph.py --help
-usage: ns_cgm_graph.py [-h] [--url URL] [--hours HOURS] [--out OUT]
-  --url URL      Nightscout base URL (default: NS_URL env or http://127.0.0.1:1337)
-  --hours HOURS  Lookback window in hours (default: 24)
-  --out OUT      Output SVG path (default: cgm.svg)
+usage: ns-cgm-graph.py [-h] [--url URL] [--hours HOURS] [--out OUT]
+
+Nightscout CGM SVG graph
+
+options:
+  -h, --help     show this help message and exit
+  --url URL      Nightscout base URL (default: NS_URL env or
+                 http://127.0.0.1:1337)
+  --hours HOURS  Lookback window in hours
+  --out OUT      Output SVG path
 ```
 
 Output is a single SVG (`cgm.svg` by default, 900×320, dark background with TIR band). Open with any browser or image viewer:
